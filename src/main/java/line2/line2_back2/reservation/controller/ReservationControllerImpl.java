@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequestMapping("/reservation")
@@ -66,6 +68,20 @@ public class ReservationControllerImpl implements ReservationController{
             log.error("ReservationController delete by id Reservation failure, error: {}", e.getMessage());
         } finally {
             log.info("ReservationController delete by id Reservation end");
+        }
+    }
+
+    @Override
+    @GetMapping("/v1/reservation/guest/{id}")
+    public List<Reservation> findByGuestId(@PathVariable Long id) {
+        try {
+            log.info("ReservationController find by guest id Reservation(id: {}) start", id);
+            return reservationService.findByGuestId(id);
+        } catch (Exception e) {
+            log.error("ReservationController find by guest id Reservation failure, error: {}", e.getMessage());
+            return null;
+        } finally {
+            log.info("ReservationController find by guest id Reservation end");
         }
     }
 }

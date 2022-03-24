@@ -21,6 +21,10 @@ public class Reservation {
     private Long id;
     private Long homeId;
     private Long roomId;
+    private Long guestId;
     private Date checkIn;
     private Date checkOut;
+    private String memo;
+    private boolean isCheckIn;
+    private boolean isCheckOut;
 }

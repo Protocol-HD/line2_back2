@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -60,6 +62,19 @@ public class ReservationServiceImpl implements ReservationService{
             log.error("ReservationService delete by id Reservation failure, error: {}", e.getMessage());
         } finally {
             log.info("ReservationService delete by id Reservation end");
+        }
+    }
+
+    @Override
+    public List<Reservation> findByGuestId(Long id) {
+        try {
+            log.info("ReservationService find by guest id Reservation(id: {}) start", id);
+            return reservationRepository.findByGuestId(id);
+        } catch (Exception e) {
+            log.error("ReservationService find by guest id Reservation failure, error: {}", e.getMessage());
+            return null;
+        } finally {
+            log.info("ReservationService find by guest id Reservation end");
         }
     }
 }

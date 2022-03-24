@@ -2,6 +2,8 @@ package line2.line2_back2.reservation.controller;
 
 import line2.line2_back2.reservation.model.Reservation;
 
+import java.util.List;
+
 public interface ReservationController {
     Reservation add(Reservation reservation);
 
@@ -10,4 +12,6 @@ public interface ReservationController {
     Reservation findById(Long id);
 
     void deleteById(Long id);
+
+    List<Reservation> findByGuestId(Long id);
 }
