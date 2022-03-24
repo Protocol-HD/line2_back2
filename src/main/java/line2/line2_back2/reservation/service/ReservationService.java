@@ -14,4 +14,6 @@ public interface ReservationService {
     void deleteById(Long id);
 
     List<Reservation> findByGuestId(Long id);
+
+    List<Reservation> findByGuestIdCheckInOut(Long id, boolean checkInStatus, boolean checkOutStatus);
 }

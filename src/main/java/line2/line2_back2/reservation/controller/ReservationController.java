@@ -14,4 +14,10 @@ public interface ReservationController {
     void deleteById(Long id);
 
     List<Reservation> findByGuestId(Long id);
+
+    List<Reservation> findByGuestIdBeforeCheckIn(Long id);
+
+    List<Reservation> findByGuestIdBeforeCheckOut(Long id);
+
+    List<Reservation> findByGuestIdAfterCheckOut(Long id);
 }

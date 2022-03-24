@@ -25,6 +25,6 @@ public class Reservation {
     private Date checkIn;
     private Date checkOut;
     private String memo;
-    private boolean isCheckIn;
-    private boolean isCheckOut;
+    private boolean checkInStatus;
+    private boolean checkOutStatus;
 }

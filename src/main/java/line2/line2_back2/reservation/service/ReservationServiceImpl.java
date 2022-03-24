@@ -77,4 +77,17 @@ public class ReservationServiceImpl implements ReservationService{
             log.info("ReservationService find by guest id Reservation end");
         }
     }
+
+    @Override
+    public List<Reservation> findByGuestIdCheckInOut(Long id, boolean checkInStatus, boolean checkOutStatus) {
+        try {
+            log.info("ReservationService find by guest check in, out status Reservation(id: {}) start", id);
+            return reservationRepository.findByGuestIdAndCheckInStatusAndCheckOutStatus(id, checkInStatus, checkOutStatus);
+        } catch (Exception e) {
+            log.error("ReservationService find by guest check in, out status Reservation failure, error: {}", e.getMessage());
+            return null;
+        } finally {
+            log.info("ReservationService find by guest check in, out status Reservation end");
+        }
+    }
 }
