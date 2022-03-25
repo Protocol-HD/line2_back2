@@ -1,23 +1,31 @@
 package line2.line2_back2.reservation.controller;
 
 import line2.line2_back2.reservation.model.Reservation;
+import line2.line2_back2.reservation.model.ReservationDtoInput;
+import line2.line2_back2.systemMessage.SystemMessage;
 
 import java.util.List;
 
 public interface ReservationController {
-    Reservation add(Reservation reservation);
+    SystemMessage add(Reservation reservation);
 
-    Reservation edit(Reservation reservation);
+    SystemMessage edit(Reservation reservation);
 
     Reservation findById(Long id);
 
-    void deleteById(Long id);
+    SystemMessage deleteById(Long id);
 
-    List<Reservation> findByGuestId(Long id);
+    List<Reservation> findByUserId(Long id);
 
-    List<Reservation> findByGuestIdBeforeCheckIn(Long id);
+    List<Reservation> findByUserIdBeforeCheckIn(Long id);
 
-    List<Reservation> findByGuestIdBeforeCheckOut(Long id);
+    List<Reservation> findByUserIdBeforeCheckOut(Long id);
 
-    List<Reservation> findByGuestIdAfterCheckOut(Long id);
+    List<Reservation> findByUserIdAfterCheckOut(Long id);
+
+    SystemMessage acceptCheckIn(Long id);
+
+    SystemMessage acceptCheckOut(Long id);
+
+    SystemMessage denyReservation(ReservationDtoInput reservationDtoInput);
 }

@@ -1,7 +1,9 @@
 package line2.line2_back2.reservation.service;
 
 import line2.line2_back2.reservation.model.Reservation;
+import line2.line2_back2.reservation.model.ReservationDtoInput;
 import line2.line2_back2.reservation.repository.ReservationRepository;
+import line2.line2_back2.systemMessage.SystemMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,30 +13,44 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ReservationServiceImpl implements ReservationService{
+public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
 
     @Override
-    public Reservation add(Reservation reservation) {
+    public SystemMessage add(Reservation reservation) {
         try {
             log.info("ReservationService add Reservation({}) start", reservation);
-            return reservationRepository.save(reservation);
+            reservationRepository.save(reservation);
+            return SystemMessage.builder()
+                    .code(1)
+                    .message("예약 성공")
+                    .build();
         } catch (Exception e) {
             log.error("ReservationService add Reservation failure, error: {}", e.getMessage());
-            return null;
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("예약 실패")
+                    .build();
         } finally {
             log.info("ReservationService add Reservation end");
         }
     }
 
     @Override
-    public Reservation edit(Reservation reservation) {
+    public SystemMessage edit(Reservation reservation) {
         try {
             log.info("ReservationService edit Reservation({}) start", reservation);
-            return reservationRepository.save(reservation);
+            reservationRepository.save(reservation);
+            return SystemMessage.builder()
+                    .code(1)
+                    .message("예약 변경 성공")
+                    .build();
         } catch (Exception e) {
             log.error("ReservationService edit Reservation failure, error: {}", e.getMessage());
-            return null;
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("예약 변경 실패")
+                    .build();
         } finally {
             log.info("ReservationService edit Reservation end");
         }
@@ -54,40 +70,94 @@ public class ReservationServiceImpl implements ReservationService{
     }
 
     @Override
-    public void deleteById(Long id) {
+    public SystemMessage deleteById(Long id) {
         try {
             log.info("ReservationService delete by id Reservation(id: {}) start", id);
             reservationRepository.deleteById(id);
+            return SystemMessage.builder()
+                    .code(1)
+                    .message("예약 삭제 성공")
+                    .build();
         } catch (Exception e) {
             log.error("ReservationService delete by id Reservation failure, error: {}", e.getMessage());
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("예약 삭제 실패")
+                    .build();
         } finally {
             log.info("ReservationService delete by id Reservation end");
         }
     }
 
     @Override
-    public List<Reservation> findByGuestId(Long id) {
+    public List<Reservation> findByUserId(Long id) {
         try {
-            log.info("ReservationService find by guest id Reservation(id: {}) start", id);
-            return reservationRepository.findByGuestId(id);
+            log.info("ReservationService find by user id Reservation(id: {}) start", id);
+            return reservationRepository.findByUserId(id);
         } catch (Exception e) {
-            log.error("ReservationService find by guest id Reservation failure, error: {}", e.getMessage());
+            log.error("ReservationService find by user id Reservation failure, error: {}", e.getMessage());
             return null;
         } finally {
-            log.info("ReservationService find by guest id Reservation end");
+            log.info("ReservationService find by user id Reservation end");
         }
     }
 
     @Override
-    public List<Reservation> findByGuestIdCheckInOut(Long id, boolean checkInStatus, boolean checkOutStatus) {
+    public List<Reservation> findByUserIdCheckInOut(Long id, boolean checkInStatus, boolean checkOutStatus) {
         try {
-            log.info("ReservationService find by guest check in, out status Reservation(id: {}) start", id);
-            return reservationRepository.findByGuestIdAndCheckInStatusAndCheckOutStatus(id, checkInStatus, checkOutStatus);
+            log.info("ReservationService find by user check in, out status Reservation(id: {}) start", id);
+            return reservationRepository.findByUserIdAndCheckInStatusAndCheckOutStatus(id, checkInStatus, checkOutStatus);
         } catch (Exception e) {
-            log.error("ReservationService find by guest check in, out status Reservation failure, error: {}", e.getMessage());
+            log.error("ReservationService find by user check in, out status Reservation failure, error: {}", e.getMessage());
             return null;
         } finally {
-            log.info("ReservationService find by guest check in, out status Reservation end");
+            log.info("ReservationService find by user check in, out status Reservation end");
+        }
+    }
+
+    @Override
+    public SystemMessage changeReservationStatus(Long id, boolean checkInStatus, boolean checkOutStatus) {
+        try {
+            log.info("ReservationService change reservation status Reservation(id: {}) start", id);
+            Reservation reservation = reservationRepository.findById(id).get();
+            reservation.setCheckInStatus(checkInStatus);
+            reservation.setCheckOutStatus(checkOutStatus);
+            reservationRepository.save(reservation);
+            return SystemMessage.builder()
+                    .code(1)
+                    .message("예약 상태 변경 성공")
+                    .build();
+        } catch (Exception e) {
+            log.error("ReservationService change reservation status Reservation failure, error: {}", e.getMessage());
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("예약 상태 변경 실패")
+                    .build();
+        } finally {
+            log.info("ReservationService change reservation status Reservation end");
+        }
+    }
+
+    @Override
+    public SystemMessage denyReservation(ReservationDtoInput reservationDtoInput) {
+        try {
+            log.info("ReservationService deny Reservation({}) start", reservationDtoInput);
+            Reservation reservation = reservationRepository.findById(reservationDtoInput.getReservationId()).get();
+            reservation.setHostToGuest(reservationDtoInput.getHostToGuest());
+            reservation.setDenyStatus(true);
+            reservationRepository.save(reservation);
+            return SystemMessage.builder()
+                    .code(1)
+                    .message("예약 거절 성공")
+                    .build();
+        } catch (Exception e) {
+            log.error("ReservationService deny Reservation failure, error: {}", e.getMessage());
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("예약 거절 실패")
+                    .build();
+        } finally {
+            log.info("ReservationService deny Reservation end");
         }
     }
 }

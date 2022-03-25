@@ -1,7 +1,9 @@
 package line2.line2_back2.reservation.controller;
 
 import line2.line2_back2.reservation.model.Reservation;
+import line2.line2_back2.reservation.model.ReservationDtoInput;
 import line2.line2_back2.reservation.service.ReservationService;
+import line2.line2_back2.systemMessage.SystemMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +20,16 @@ public class ReservationControllerImpl implements ReservationController{
 
     @Override
     @PostMapping("/v1/reservation")
-    public Reservation add(@RequestBody Reservation reservation) {
+    public SystemMessage add(@RequestBody Reservation reservation) {
         try {
             log.info("ReservationController add Reservation({}) start", reservation);
             return reservationService.add(reservation);
         } catch (Exception e) {
             log.error("ReservationController add Reservation failure, error: {}", e.getMessage());
-            return null;
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("예약 실패")
+                    .build();
         } finally {
             log.info("ReservationController add Reservation end");
         }
@@ -32,13 +37,16 @@ public class ReservationControllerImpl implements ReservationController{
 
     @Override
     @PutMapping("/v1/reservation")
-    public Reservation edit(@RequestBody Reservation reservation) {
+    public SystemMessage edit(@RequestBody Reservation reservation) {
         try {
             log.info("ReservationController edit Reservation({}) start", reservation);
             return reservationService.edit(reservation);
         } catch (Exception e) {
             log.error("ReservationController edit Reservation failure, error: {}", e.getMessage());
-            return null;
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("예약 변경 실패")
+                    .build();
         } finally {
             log.info("ReservationController edit Reservation end");
         }
@@ -60,70 +68,125 @@ public class ReservationControllerImpl implements ReservationController{
 
     @Override
     @DeleteMapping("/v1/reservation/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public SystemMessage deleteById(@PathVariable Long id) {
         try {
             log.info("ReservationController delete by id Reservation(id: {}) start", id);
-            reservationService.deleteById(id);
+            return reservationService.deleteById(id);
         } catch (Exception e) {
             log.error("ReservationController delete by id Reservation failure, error: {}", e.getMessage());
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("예약 삭제 실패")
+                    .build();
         } finally {
             log.info("ReservationController delete by id Reservation end");
         }
     }
 
     @Override
-    @GetMapping("/v1/reservation/guest/{id}")
-    public List<Reservation> findByGuestId(@PathVariable Long id) {
+    @GetMapping("/v1/reservation/user/{id}")
+    public List<Reservation> findByUserId(@PathVariable Long id) {
         try {
-            log.info("ReservationController find by guest id Reservation(id: {}) start", id);
-            return reservationService.findByGuestId(id);
+            log.info("ReservationController find by user id Reservation(id: {}) start", id);
+            return reservationService.findByUserId(id);
         } catch (Exception e) {
-            log.error("ReservationController find by guest id Reservation failure, error: {}", e.getMessage());
+            log.error("ReservationController find by user id Reservation failure, error: {}", e.getMessage());
             return null;
         } finally {
-            log.info("ReservationController find by guest id Reservation end");
+            log.info("ReservationController find by user id Reservation end");
         }
     }
 
     @Override
-    @GetMapping("/v1/reservation/guest/before_check_in/{id}")
-    public List<Reservation> findByGuestIdBeforeCheckIn(@PathVariable Long id) {
+    @GetMapping("/v1/reservation/user/before_check_in/{id}")
+    public List<Reservation> findByUserIdBeforeCheckIn(@PathVariable Long id) {
         try {
-            log.info("ReservationController find by guest before check in Reservation(id: {}) start", id);
-            return reservationService.findByGuestIdCheckInOut(id, false, false);
+            log.info("ReservationController find by user before check in Reservation(id: {}) start", id);
+            return reservationService.findByUserIdCheckInOut(id, false, false);
         } catch (Exception e) {
-            log.error("ReservationController find by guest before check in Reservation failure, error: {}", e.getMessage());
+            log.error("ReservationController find by user before check in Reservation failure, error: {}", e.getMessage());
             return null;
         } finally {
-            log.info("ReservationController find by guest before check in Reservation end");
+            log.info("ReservationController find by user before check in Reservation end");
         }
     }
 
     @Override
-    @GetMapping("/v1/reservation/guest/before_check_out/{id}")
-    public List<Reservation> findByGuestIdBeforeCheckOut(@PathVariable Long id) {
+    @GetMapping("/v1/reservation/user/before_check_out/{id}")
+    public List<Reservation> findByUserIdBeforeCheckOut(@PathVariable Long id) {
         try {
-            log.info("ReservationController find by guest before check out Reservation(id: {}) start", id);
-            return reservationService.findByGuestIdCheckInOut(id, true, false);
+            log.info("ReservationController find by user before check out Reservation(id: {}) start", id);
+            return reservationService.findByUserIdCheckInOut(id, true, false);
         } catch (Exception e) {
-            log.error("ReservationController find by guest before check out Reservation failure, error: {}", e.getMessage());
+            log.error("ReservationController find by user before check out Reservation failure, error: {}", e.getMessage());
             return null;
         } finally {
-            log.info("ReservationController find by guest before check out Reservation end");
+            log.info("ReservationController find by user before check out Reservation end");
         }
     }
 
     @Override
-    @GetMapping("/v1/reservation/guest/after_check_out/{id}")
-    public List<Reservation> findByGuestIdAfterCheckOut(@PathVariable Long id) {
+    @GetMapping("/v1/reservation/user/after_check_out/{id}")
+    public List<Reservation> findByUserIdAfterCheckOut(@PathVariable Long id) {
         try {
-            log.info("ReservationController find by guest after check out Reservation(id: {}) start", id);
-            return reservationService.findByGuestIdCheckInOut(id, true, true);
+            log.info("ReservationController find by user after check out Reservation(id: {}) start", id);
+            return reservationService.findByUserIdCheckInOut(id, true, true);
         } catch (Exception e) {
-            log.error("ReservationController find by guest after check out Reservation failure, error: {}", e.getMessage());
+            log.error("ReservationController find by user after check out Reservation failure, error: {}", e.getMessage());
             return null;
         } finally {
-            log.info("ReservationController find by guest after check out Reservation end");
+            log.info("ReservationController find by user after check out Reservation end");
+        }
+    }
+
+    @Override
+    @PutMapping("/v1/reservation/accept_check_in/{id}")
+    public SystemMessage acceptCheckIn(@PathVariable Long id) {
+        try {
+            log.info("ReservationController accept check in Reservation(id: {}) start", id);
+            return reservationService.changeReservationStatus(id, true, false);
+        } catch (Exception e) {
+            log.error("ReservationController accept check in Reservation failure, error: {}", e.getMessage());
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("체크인 실패")
+                    .build();
+        } finally {
+            log.info("ReservationController accept check in Reservation end");
+        }
+    }
+
+    @Override
+    @PutMapping("/v1/reservation/accept_check_out/{id}")
+    public SystemMessage acceptCheckOut(@PathVariable Long id) {
+        try {
+            log.info("ReservationController accept check out Reservation(id: {}) start", id);
+            return reservationService.changeReservationStatus(id, true, true);
+        } catch (Exception e) {
+            log.error("ReservationController accept check out Reservation failure, error: {}", e.getMessage());
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("체크아웃 실패")
+                    .build();
+        } finally {
+            log.info("ReservationController accept check out Reservation end");
+        }
+    }
+
+    @Override
+    @PutMapping("/v1/reservation/deny")
+    public SystemMessage denyReservation(@RequestBody ReservationDtoInput reservationDtoInput) {
+        try {
+            log.info("ReservationController deny Reservation({}) start", reservationDtoInput);
+            return reservationService.denyReservation(reservationDtoInput);
+        } catch (Exception e) {
+            log.error("ReservationController deny Reservation failure, error: {}", e.getMessage());
+            return SystemMessage.builder()
+                    .code(2)
+                    .message("예약 거절 실패")
+                    .build();
+        } finally {
+            log.info("ReservationController deny Reservation end");
         }
     }
 }

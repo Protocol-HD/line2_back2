@@ -1,6 +1,7 @@
 package line2.line2_back2.reservation.model;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,10 +22,15 @@ public class Reservation {
     private Long id;
     private Long homeId;
     private Long roomId;
-    private Long guestId;
+    private Long userId;
     private Date checkIn;
     private Date checkOut;
-    private String memo;
+    private String hostToGuest;
+    private String guestToHost;
+    @ColumnDefault("false")
     private boolean checkInStatus;
+    @ColumnDefault("false")
     private boolean checkOutStatus;
+    @ColumnDefault("false")
+    private boolean denyStatus;
 }
