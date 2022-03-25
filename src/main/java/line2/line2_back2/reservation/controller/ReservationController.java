@@ -18,6 +18,8 @@ public interface ReservationController {
 
     List<Reservation> findByUserId(Long id);
 
+    List<Reservation> findByHomeId(Long id);
+
     List<Reservation> findByUserIdBeforeCheckIn(Long id);
 
     List<Reservation> findByUserIdBeforeCheckOut(Long id);

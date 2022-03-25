@@ -100,6 +100,20 @@ public class ReservationControllerImpl implements ReservationController{
     }
 
     @Override
+    @GetMapping("/v1/reservation/home/{id}")
+    public List<Reservation> findByHomeId(@PathVariable Long id) {
+        try {
+            log.info("ReservationController find by home id Reservation(id: {}) start", id);
+            return reservationService.findByHomeId(id);
+        } catch (Exception e) {
+            log.error("ReservationController find by home id Reservation failure, error: {}", e.getMessage());
+            return null;
+        } finally {
+            log.info("ReservationController find by home id Reservation end");
+        }
+    }
+
+    @Override
     @GetMapping("/v1/reservation/user/before_check_in/{id}")
     public List<Reservation> findByUserIdBeforeCheckIn(@PathVariable Long id) {
         try {
