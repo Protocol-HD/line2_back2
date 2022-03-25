@@ -1,6 +1,7 @@
 package line2.line2_back2.reservation.service;
 
 import line2.line2_back2.reservation.model.Reservation;
+import line2.line2_back2.reservation.model.ReservationDenyInput;
 import line2.line2_back2.reservation.model.ReservationDtoInput;
 import line2.line2_back2.systemMessage.SystemMessage;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public interface ReservationService {
     SystemMessage add(Reservation reservation);
 
-    SystemMessage edit(Reservation reservation);
+    SystemMessage edit(ReservationDtoInput reservationDtoInput);
 
     Reservation findById(Long id);
 
@@ -21,5 +22,5 @@ public interface ReservationService {
 
     SystemMessage changeReservationStatus(Long id, boolean checkInStatus, boolean checkOutStatus);
 
-    SystemMessage denyReservation(ReservationDtoInput reservationDtoInput);
+    SystemMessage denyReservation(ReservationDenyInput reservationDenyInput);
 }

@@ -1,6 +1,7 @@
 package line2.line2_back2.reservation.controller;
 
 import line2.line2_back2.reservation.model.Reservation;
+import line2.line2_back2.reservation.model.ReservationDenyInput;
 import line2.line2_back2.reservation.model.ReservationDtoInput;
 import line2.line2_back2.reservation.service.ReservationService;
 import line2.line2_back2.systemMessage.SystemMessage;
@@ -38,10 +39,10 @@ public class ReservationControllerImpl implements ReservationController{
 
     @Override
     @PutMapping("/v1/reservation")
-    public SystemMessage edit(@RequestBody Reservation reservation) {
+    public SystemMessage edit(@RequestBody ReservationDtoInput reservationDtoInput) {
         try {
-            log.info("ReservationController edit Reservation({}) start", reservation);
-            return reservationService.edit(reservation);
+            log.info("ReservationController edit Reservation({}) start", reservationDtoInput);
+            return reservationService.edit(reservationDtoInput);
         } catch (Exception e) {
             log.error("ReservationController edit Reservation failure, error: {}", e.getMessage());
             return SystemMessage.builder()
@@ -192,10 +193,10 @@ public class ReservationControllerImpl implements ReservationController{
 
     @Override
     @PutMapping("/v1/reservation/deny")
-    public SystemMessage denyReservation(@RequestBody ReservationDtoInput reservationDtoInput) {
+    public SystemMessage denyReservation(@RequestBody ReservationDenyInput reservationDenyInput) {
         try {
-            log.info("ReservationController deny Reservation({}) start", reservationDtoInput);
-            return reservationService.denyReservation(reservationDtoInput);
+            log.info("ReservationController deny Reservation({}) start", reservationDenyInput);
+            return reservationService.denyReservation(reservationDenyInput);
         } catch (Exception e) {
             log.error("ReservationController deny Reservation failure, error: {}", e.getMessage());
             return SystemMessage.builder()

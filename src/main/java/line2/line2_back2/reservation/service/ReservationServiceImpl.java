@@ -1,6 +1,7 @@
 package line2.line2_back2.reservation.service;
 
 import line2.line2_back2.reservation.model.Reservation;
+import line2.line2_back2.reservation.model.ReservationDenyInput;
 import line2.line2_back2.reservation.model.ReservationDtoInput;
 import line2.line2_back2.reservation.repository.ReservationRepository;
 import line2.line2_back2.systemMessage.SystemMessage;
@@ -37,9 +38,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public SystemMessage edit(Reservation reservation) {
+    public SystemMessage edit(ReservationDtoInput reservationDtoInput) {
         try {
-            log.info("ReservationService edit Reservation({}) start", reservation);
+            log.info("ReservationService edit Reservation({}) start", reservationDtoInput);
+            Reservation reservation = reservationRepository.findById(reservationDtoInput.getReservationId()).get();
+            reservation.setCheckIn(reservationDtoInput.getCheckIn());
+            reservation.setCheckOut(reservationDtoInput.getCheckOut());
             reservationRepository.save(reservation);
             return SystemMessage.builder()
                     .code(1)
@@ -139,11 +143,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public SystemMessage denyReservation(ReservationDtoInput reservationDtoInput) {
+    public SystemMessage denyReservation(ReservationDenyInput reservationDenyInput) {
         try {
-            log.info("ReservationService deny Reservation({}) start", reservationDtoInput);
-            Reservation reservation = reservationRepository.findById(reservationDtoInput.getReservationId()).get();
-            reservation.setHostToGuest(reservationDtoInput.getHostToGuest());
+            log.info("ReservationService deny Reservation({}) start", reservationDenyInput);
+            Reservation reservation = reservationRepository.findById(reservationDenyInput.getReservationId()).get();
+            reservation.setHostToGuest(reservationDenyInput.getHostToGuest());
             reservation.setDenyStatus(true);
             reservationRepository.save(reservation);
             return SystemMessage.builder()
