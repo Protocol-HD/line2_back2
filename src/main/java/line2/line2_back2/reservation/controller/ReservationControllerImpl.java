@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -102,7 +103,10 @@ public class ReservationControllerImpl implements ReservationController{
     public List<Reservation> findByUserIdBeforeCheckIn(@PathVariable Long id) {
         try {
             log.info("ReservationController find by user before check in Reservation(id: {}) start", id);
-            return reservationService.findByUserIdCheckInOut(id, false, false);
+            List<Reservation> reservations = new ArrayList<>();
+            reservations.addAll(reservationService.findByUserIdCheckInOut(id, false, false, false));
+            reservations.addAll(reservationService.findByUserIdCheckInOut(id, false, false, true));
+            return reservations;
         } catch (Exception e) {
             log.error("ReservationController find by user before check in Reservation failure, error: {}", e.getMessage());
             return null;
@@ -116,7 +120,7 @@ public class ReservationControllerImpl implements ReservationController{
     public List<Reservation> findByUserIdBeforeCheckOut(@PathVariable Long id) {
         try {
             log.info("ReservationController find by user before check out Reservation(id: {}) start", id);
-            return reservationService.findByUserIdCheckInOut(id, true, false);
+            return reservationService.findByUserIdCheckInOut(id, true, false, false);
         } catch (Exception e) {
             log.error("ReservationController find by user before check out Reservation failure, error: {}", e.getMessage());
             return null;
@@ -130,7 +134,20 @@ public class ReservationControllerImpl implements ReservationController{
     public List<Reservation> findByUserIdAfterCheckOut(@PathVariable Long id) {
         try {
             log.info("ReservationController find by user after check out Reservation(id: {}) start", id);
-            return reservationService.findByUserIdCheckInOut(id, true, true);
+            return reservationService.findByUserIdCheckInOut(id, true, true, false);
+        } catch (Exception e) {
+            log.error("ReservationController find by user after check out Reservation failure, error: {}", e.getMessage());
+            return null;
+        } finally {
+            log.info("ReservationController find by user after check out Reservation end");
+        }
+    }
+
+    @Override
+    public List<Reservation> findByUserDenyReservation(Long id) {
+        try {
+            log.info("ReservationController find by user after check out Reservation(id: {}) start", id);
+            return reservationService.findByUserIdCheckInOut(id, true, true, false);
         } catch (Exception e) {
             log.error("ReservationController find by user after check out Reservation failure, error: {}", e.getMessage());
             return null;

@@ -103,10 +103,10 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> findByUserIdCheckInOut(Long id, boolean checkInStatus, boolean checkOutStatus) {
+    public List<Reservation> findByUserIdCheckInOut(Long id, boolean checkInStatus, boolean checkOutStatus, boolean denyStatus) {
         try {
             log.info("ReservationService find by user check in, out status Reservation(id: {}) start", id);
-            return reservationRepository.findByUserIdAndCheckInStatusAndCheckOutStatus(id, checkInStatus, checkOutStatus);
+            return reservationRepository.findByUserIdAndCheckInStatusAndCheckOutStatusAndDenyStatus(id, checkInStatus, checkOutStatus, denyStatus);
         } catch (Exception e) {
             log.error("ReservationService find by user check in, out status Reservation failure, error: {}", e.getMessage());
             return null;

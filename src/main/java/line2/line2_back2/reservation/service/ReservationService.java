@@ -17,7 +17,7 @@ public interface ReservationService {
 
     List<Reservation> findByUserId(Long id);
 
-    List<Reservation> findByUserIdCheckInOut(Long id, boolean checkInStatus, boolean checkOutStatus);
+    List<Reservation> findByUserIdCheckInOut(Long id, boolean checkInStatus, boolean checkOutStatus, boolean denyStatus);
 
     SystemMessage changeReservationStatus(Long id, boolean checkInStatus, boolean checkOutStatus);
 

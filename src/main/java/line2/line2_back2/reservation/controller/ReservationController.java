@@ -23,6 +23,8 @@ public interface ReservationController {
 
     List<Reservation> findByUserIdAfterCheckOut(Long id);
 
+    List<Reservation> findByUserDenyReservation(Long id);
+
     SystemMessage acceptCheckIn(Long id);
 
     SystemMessage acceptCheckOut(Long id);

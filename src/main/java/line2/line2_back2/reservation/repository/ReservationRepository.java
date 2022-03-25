@@ -8,5 +8,5 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByUserId(Long id);
 
-    List<Reservation> findByUserIdAndCheckInStatusAndCheckOutStatus(Long id, boolean checkInStatus, boolean checkOutStatus);
+    List<Reservation> findByUserIdAndCheckInStatusAndCheckOutStatusAndDenyStatus(Long id, boolean checkInStatus, boolean checkOutStatus, boolean denyStatus);
 }
