@@ -21,7 +21,7 @@ public class ReservationControllerImpl implements ReservationController{
     private final ReservationService reservationService;
 
     @Override
-    @PostMapping("/v1/reservation/add")
+    @PostMapping("/v1/reservation")
     public SystemMessage add(@RequestBody Reservation reservation) {
         try {
             log.info("ReservationController add Reservation({}) start", reservation);
