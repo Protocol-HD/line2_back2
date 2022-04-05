@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@RequestMapping("/manage")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 @CrossOrigin
 public class UserControllerImpl implements UserController {
