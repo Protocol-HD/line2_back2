@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import line2.line2_back2.util.BaseTime;
+
 @Entity
 @Getter
 @Setter
@@ -14,7 +16,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class User extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
