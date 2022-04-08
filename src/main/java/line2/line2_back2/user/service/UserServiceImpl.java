@@ -1,6 +1,7 @@
 package line2.line2_back2.user.service;
 
 import line2.line2_back2.user.model.User;
+import line2.line2_back2.user.model.UserLoginDto;
 import line2.line2_back2.user.repository.UserRepository;
 import line2.line2_back2.systemMessage.SystemMessage;
 import lombok.RequiredArgsConstructor;
@@ -83,6 +84,19 @@ public class UserServiceImpl implements UserService {
                     .build();
         } finally {
             log.info("UserService delete by id User end");
+        }
+    }
+
+    @Override
+    public User login(UserLoginDto userLoginDto) {
+        try {
+            log.info("UserService login User({}) start", userLoginDto);
+            return userRepository.findByLoginNameAndPassword(userLoginDto.getLoginName(), userLoginDto.getPassword());
+        } catch (Exception e) {
+            log.error("UserService login User failure, error: {}", e.getMessage());
+            return null;
+        } finally {
+            log.info("UserService login User end");
         }
     }
 }

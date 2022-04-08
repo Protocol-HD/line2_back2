@@ -1,6 +1,7 @@
 package line2.line2_back2.user.controller;
 
 import line2.line2_back2.user.model.User;
+import line2.line2_back2.user.model.UserLoginDto;
 import line2.line2_back2.user.service.UserService;
 import line2.line2_back2.systemMessage.SystemMessage;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +78,20 @@ public class UserControllerImpl implements UserController {
                     .build();
         } finally {
             log.info("UserController delete by id User end");
+        }
+    }
+
+    @Override
+    @PostMapping("/v1/user/login")
+    public User login(@RequestBody UserLoginDto userLoginDto) {
+        try {
+            log.info("UserController login User({}) start", userLoginDto);
+            return userService.login(userLoginDto);
+        } catch (Exception e) {
+            log.error("UserController login User failure, error: {}", e.getMessage());
+            return null;
+        } finally {
+            log.info("UserController login User end");
         }
     }
 }
